@@ -1,5 +1,6 @@
 package dev.phytolizer.jade
 
+import dev.phytolizer.util.Time
 import org.lwjgl.Version
 import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.Callbacks.glfwFreeCallbacks
@@ -74,6 +75,9 @@ object Window {
     }
 
     private fun loop() {
+        var beginTime = Time.time
+        var endTime: Float
+
         while (!glfwWindowShouldClose(glfwWindow)) {
             glfwPollEvents()
 
@@ -92,6 +96,10 @@ object Window {
             }
 
             glfwSwapBuffers(glfwWindow)
+
+            endTime = Time.time
+            val dt = endTime - beginTime
+            beginTime = endTime
         }
     }
 }

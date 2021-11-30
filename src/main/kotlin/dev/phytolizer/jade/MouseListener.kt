@@ -50,33 +50,19 @@ object MouseListener {
     }
 
     val x: Float
-        get() {
-            return xPos.toFloat()
-        }
+        get() = xPos.toFloat()
     val y: Float
-        get() {
-            return yPos.toFloat()
-        }
+        get() = yPos.toFloat()
     val dx: Float
-        get() {
-            return (lastX - xPos).toFloat()
-        }
+        get() = (lastX - xPos).toFloat()
     val dy: Float
-        get() {
-            return (lastY - yPos).toFloat()
-        }
+        get() = (lastY - yPos).toFloat()
     val scrollX: Float
-        get() {
-            return scrollX_.toFloat()
-        }
+        get() = scrollX_.toFloat()
     val scrollY: Float
-        get() {
-            return scrollY.toFloat()
-        }
+        get() = scrollY_.toFloat()
     val isDragging: Boolean
-        get() {
-            return isDragging_
-        }
+        get() = isDragging_
 
     fun mouseButtonDown(button: Int): Boolean {
         return if (button < mouseButtonPressed.size) {
