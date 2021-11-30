@@ -12,15 +12,24 @@ import org.lwjgl.system.MemoryUtil.NULL
 import kotlin.math.max
 
 object Window {
-    private var fadeToBlack = false
     private var glfwWindow = NULL
     private const val width = 1920
     private const val height = 1080
     private const val title = "Mario"
-    private var r = 1.0f
-    private var g = 1.0f
-    private var b = 1.0f
-    private var a = 1.0f
+    var r = 1.0f
+    var g = 1.0f
+    var b = 1.0f
+    var a = 1.0f
+
+    private var currentScene: Scene? = null
+
+    fun changeScene(newScene: Int) {
+        when (newScene) {
+            0 -> currentScene = LevelEditorScene()
+            1 -> currentScene = LevelScene()
+            else -> assert(false) { "Unknown scene $newScene" }
+        }
+    }
 
     fun run() {
         println("Hello LWJGL ${Version.getVersion()}!")
@@ -72,11 +81,14 @@ object Window {
         glfwShowWindow(glfwWindow)
 
         GL.createCapabilities()
+
+        Window.changeScene(0)
     }
 
     private fun loop() {
         var beginTime = Time.time
         var endTime: Float
+        var dt = -1.0f
 
         while (!glfwWindowShouldClose(glfwWindow)) {
             glfwPollEvents()
@@ -84,21 +96,14 @@ object Window {
             glClearColor(r, g, b, a)
             glClear(GL_COLOR_BUFFER_BIT)
 
-            if (fadeToBlack) {
-                r = max(r - 0.01f, 0.0f)
-                g = max(g - 0.01f, 0.0f)
-                b = max(b - 0.01f, 0.0f)
-                a = max(a - 0.01f, 0.0f)
-            }
-
-            if (KeyListener.isKeyPressed(GLFW_KEY_SPACE)) {
-                fadeToBlack = true
+            if (dt >= 0) {
+                currentScene!!.update(dt)
             }
 
             glfwSwapBuffers(glfwWindow)
 
             endTime = Time.time
-            val dt = endTime - beginTime
+            dt = endTime - beginTime
             beginTime = endTime
         }
     }
