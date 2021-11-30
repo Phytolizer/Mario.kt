@@ -8,12 +8,18 @@ import org.lwjgl.glfw.GLFWErrorCallback
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL11.*
 import org.lwjgl.system.MemoryUtil.NULL
+import kotlin.math.max
 
 object Window {
+    private var fadeToBlack = false
     private var glfwWindow = NULL
     private const val width = 1920
     private const val height = 1080
     private const val title = "Mario"
+    private var r = 1.0f
+    private var g = 1.0f
+    private var b = 1.0f
+    private var a = 1.0f
 
     fun run() {
         println("Hello LWJGL ${Version.getVersion()}!")
@@ -71,11 +77,18 @@ object Window {
         while (!glfwWindowShouldClose(glfwWindow)) {
             glfwPollEvents()
 
-            glClearColor(1.0f, 0.0f, 0.0f, 1.0f)
+            glClearColor(r, g, b, a)
             glClear(GL_COLOR_BUFFER_BIT)
 
+            if (fadeToBlack) {
+                r = max(r - 0.01f, 0.0f)
+                g = max(g - 0.01f, 0.0f)
+                b = max(b - 0.01f, 0.0f)
+                a = max(a - 0.01f, 0.0f)
+            }
+
             if (KeyListener.isKeyPressed(GLFW_KEY_SPACE)) {
-                println("Space key is pressed")
+                fadeToBlack = true
             }
 
             glfwSwapBuffers(glfwWindow)
