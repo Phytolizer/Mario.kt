@@ -48,6 +48,14 @@ object Window {
             throw IllegalStateException("Failed to create the GLFW window")
         }
 
+        glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallback)
+        glfwSetMouseButtonCallback(
+            glfwWindow,
+            MouseListener::mouseButtonCallback
+        )
+        glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback)
+        glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback)
+
         // Make the OpenGL context current
         glfwMakeContextCurrent(glfwWindow)
         // Enable vsync
@@ -65,6 +73,10 @@ object Window {
 
             glClearColor(1.0f, 0.0f, 0.0f, 1.0f)
             glClear(GL_COLOR_BUFFER_BIT)
+
+            if (KeyListener.isKeyPressed(GLFW_KEY_SPACE)) {
+                println("Space key is pressed")
+            }
 
             glfwSwapBuffers(glfwWindow)
         }
