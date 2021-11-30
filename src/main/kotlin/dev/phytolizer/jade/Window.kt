@@ -1,6 +1,8 @@
 package dev.phytolizer.jade
 
 import org.lwjgl.Version
+import org.lwjgl.glfw.Callbacks
+import org.lwjgl.glfw.Callbacks.glfwFreeCallbacks
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.glfw.GLFWErrorCallback
 import org.lwjgl.opengl.GL
@@ -18,6 +20,11 @@ object Window {
 
         init()
         loop()
+
+        glfwFreeCallbacks(glfwWindow)
+        glfwDestroyWindow(glfwWindow)
+        glfwTerminate()
+        glfwSetErrorCallback(null)!!.free()
     }
 
     private fun init() {
