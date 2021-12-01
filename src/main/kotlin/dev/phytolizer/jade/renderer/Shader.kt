@@ -1,6 +1,5 @@
 package dev.phytolizer.jade.renderer
 
-import org.lwjgl.opengl.GL20
 import org.lwjgl.opengl.GL20.*
 import java.io.IOException
 import java.nio.file.Files
