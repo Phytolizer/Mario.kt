@@ -1,5 +1,6 @@
 package dev.phytolizer.jade
 
+import dev.phytolizer.jade.renderer.Shader
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11.glDrawElements
 import org.lwjgl.opengl.GL15.glBufferData
@@ -34,9 +35,6 @@ void main()
     color = fColor;
 }
 """
-    private var vertexId = 0
-    private var fragmentId = 0
-    private var shaderProgram = 0
     private val vertexArray = listOf(
         0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
         -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
@@ -50,50 +48,11 @@ void main()
     private var vaoId = 0
     private var vboId = 0
     private var eboId = 0
+    private var defaultShader = Shader()
 
     override fun init() {
-        // ====================
-        // Compile/link shaders
-        // ====================
-
-        // Load and compile vertex shader
-        vertexId = glCreateShader(GL_VERTEX_SHADER)
-        // Pass shader source code to GPU
-        glShaderSource(vertexId, vertexShaderSource)
-        glCompileShader(vertexId)
-        var success = glGetShaderi(vertexId, GL_COMPILE_STATUS)
-        if (success == GL_FALSE) {
-            val len = glGetShaderi(vertexId, GL_INFO_LOG_LENGTH)
-            println("ERROR: 'defaultShader.glsl'\n\tVertex shader compilation failed.")
-            println(glGetShaderInfoLog(vertexId, len))
-            assert(false)
-        }
-
-        // Load and compile fragment shader
-        fragmentId = glCreateShader(GL_FRAGMENT_SHADER)
-        // Pass shader source code to GPU
-        glShaderSource(fragmentId, fragmentShaderSource)
-        glCompileShader(fragmentId)
-        success = glGetShaderi(fragmentId, GL_COMPILE_STATUS)
-        if (success == GL_FALSE) {
-            val len = glGetShaderi(fragmentId, GL_INFO_LOG_LENGTH)
-            println("ERROR: 'defaultShader.glsl'\n\tFragment shader compilation failed.")
-            println(glGetShaderInfoLog(fragmentId, len))
-            assert(false)
-        }
-
-        // Link shaders, check for errors
-        shaderProgram = glCreateProgram()
-        glAttachShader(shaderProgram, vertexId)
-        glAttachShader(shaderProgram, fragmentId)
-        glLinkProgram(shaderProgram)
-        success = glGetProgrami(shaderProgram, GL_LINK_STATUS)
-        if (success == GL_FALSE) {
-            val len = glGetProgrami(shaderProgram, GL_INFO_LOG_LENGTH)
-            println("ERROR: 'defaultShader.glsl'\n\tShader program linking failed.")
-            println(glGetProgramInfoLog(shaderProgram, len))
-            assert(false)
-        }
+        defaultShader = Shader("assets/shaders/default.glsl")
+        defaultShader.compile()
 
         // =========================
         // Generate VAO, VBO, EBO...
@@ -145,7 +104,7 @@ void main()
 
     override fun update(dt: Float) {
         // Bind shader program
-        glUseProgram(shaderProgram)
+        defaultShader.use()
         // Bind VAO
         glBindVertexArray(vaoId)
 
@@ -159,6 +118,6 @@ void main()
         glDisableVertexAttribArray(0)
         glDisableVertexAttribArray(1)
         glBindVertexArray(0)
-        glUseProgram(0)
+        defaultShader.detach()
     }
 }
