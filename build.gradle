@@ -1,3 +1,4 @@
+//file:noinspection GradlePackageUpdate
 import org.gradle.internal.os.OperatingSystem
 
 plugins {
@@ -7,7 +8,6 @@ plugins {
 
 group 'dev.phytolizer'
 version '1.0-SNAPSHOT'
-sourceCompatibility = 1.16
 
 repositories {
     mavenCentral()
