@@ -2,14 +2,12 @@ package dev.phytolizer.jade
 
 import dev.phytolizer.util.Time
 import org.lwjgl.Version
-import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.Callbacks.glfwFreeCallbacks
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.glfw.GLFWErrorCallback
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL11.*
 import org.lwjgl.system.MemoryUtil.NULL
-import kotlin.math.max
 
 object Window {
     private var glfwWindow = NULL
@@ -19,7 +17,7 @@ object Window {
     var r = 1.0f
     var g = 1.0f
     var b = 1.0f
-    var a = 1.0f
+    private var a = 1.0f
 
     private var currentScene: Scene? = null
 

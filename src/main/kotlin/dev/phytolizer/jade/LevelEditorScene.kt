@@ -1,7 +1,6 @@
 package dev.phytolizer.jade
 
 import org.lwjgl.BufferUtils
-import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL11.glDrawElements
 import org.lwjgl.opengl.GL15.glBufferData
 import org.lwjgl.opengl.GL20.*
