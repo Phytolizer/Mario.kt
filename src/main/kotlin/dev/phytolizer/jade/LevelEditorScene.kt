@@ -1,6 +1,7 @@
 package dev.phytolizer.jade
 
 import dev.phytolizer.jade.renderer.Shader
+import org.joml.Vector2f
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11.glDrawElements
 import org.lwjgl.opengl.GL15.glBufferData
@@ -9,11 +10,12 @@ import org.lwjgl.opengl.GL30.glBindVertexArray
 import org.lwjgl.opengl.GL30.glGenVertexArrays
 
 class LevelEditorScene : Scene() {
+    override var camera = Camera(Vector2f())
     private val vertexArray = listOf(
-        0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-        -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-        0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-        -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+        100.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+        0.0f, 100.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+        100.0f, 100.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
     )
     private val elementArray = listOf(
         2, 1, 0,
@@ -25,6 +27,7 @@ class LevelEditorScene : Scene() {
     private var defaultShader = Shader()
 
     override fun init() {
+        camera = Camera(Vector2f())
         defaultShader = Shader("assets/shaders/default.glsl")
         defaultShader.compile()
 
@@ -77,8 +80,11 @@ class LevelEditorScene : Scene() {
     }
 
     override fun update(dt: Float) {
+        camera.position.x -= dt * 50.0f
         // Bind shader program
         defaultShader.use()
+        defaultShader.uploadMat4f("uProjection", camera.projectionMatrix)
+        defaultShader.uploadMat4f("uView", camera.viewMatrix)
         // Bind VAO
         glBindVertexArray(vaoId)
 

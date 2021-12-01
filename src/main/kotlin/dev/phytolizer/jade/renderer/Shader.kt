@@ -1,5 +1,7 @@
 package dev.phytolizer.jade.renderer
 
+import org.joml.Matrix4f
+import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL20.*
 import java.io.IOException
 import java.nio.file.Files
@@ -91,5 +93,13 @@ class Shader() {
 
     fun detach() {
         glUseProgram(0)
+    }
+
+    fun uploadMat4f(varName: String, mat4: Matrix4f) {
+        val varLocation = glGetUniformLocation(shaderProgramId, varName)
+        use()
+        val matBuffer = BufferUtils.createFloatBuffer(16)
+        mat4.get(matBuffer)
+        glUniformMatrix4fv(varLocation, false, matBuffer)
     }
 }
