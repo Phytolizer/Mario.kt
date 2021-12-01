@@ -9,32 +9,6 @@ import org.lwjgl.opengl.GL30.glBindVertexArray
 import org.lwjgl.opengl.GL30.glGenVertexArrays
 
 class LevelEditorScene : Scene() {
-    private val vertexShaderSource =
-        """#version 330 core
-
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec4 aColor;
-
-out vec4 fColor;
-
-void main()
-{
-   fColor = aColor;
-   gl_Position = vec4(aPos, 1.0);
-}
-"""
-    private val fragmentShaderSource =
-        """#version 330 core
-
-in vec4 fColor;
-
-out vec4 color;
-
-void main()
-{
-    color = fColor;
-}
-"""
     private val vertexArray = listOf(
         0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
         -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
