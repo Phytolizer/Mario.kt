@@ -23,12 +23,13 @@ object Window {
 
     private var currentScene: Scene? = null
 
-    fun changeScene(newScene: Int) {
+    private fun changeScene(newScene: Int) {
         when (newScene) {
             0 -> currentScene = LevelEditorScene()
             1 -> currentScene = LevelScene()
             else -> assert(false) { "Unknown scene $newScene" }
         }
+        currentScene!!.init()
     }
 
     fun run() {
@@ -82,7 +83,7 @@ object Window {
 
         GL.createCapabilities()
 
-        Window.changeScene(0)
+        changeScene(0)
     }
 
     private fun loop() {
